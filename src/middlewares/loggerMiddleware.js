@@ -1,13 +1,13 @@
 import morgan from "morgan";
 import logger from "../utils/logger.js";
 
-const captureEmailForAuthLogging = (req, res, next) => {
+const captureUsernameForAuthLogging = (req, res, next) => {
   if (
     req.body &&
     (req.path.startsWith("/api/v1/auth/login") ||
       req.path.startsWith("/api/v1/auth/signup"))
   ) {
-    req.emailForLogging = req.body.email;
+    req.usernameForLogging = req.body.username;
   }
   next();
 };
@@ -16,8 +16,8 @@ morgan.token("user-info", (req) => {
   if (req.user && req.user.id) {
     return `userId: ${req.user.id}`;
   }
-  if (req.emailForLogging) {
-    return `email: ${req.emailForLogging}`;
+  if (req.usernameForLogging) {
+    return `username: ${req.usernameForLogging}`;
   }
   return "";
 });
@@ -64,7 +64,7 @@ const globalErrorLogger = (err, req, res, next) => {
     message: err.err?.message || "Unhandled error occurred",
     context: err.funcName || "unknown function",
     user:
-      err.email ||
+      err.username ||
       err.userId ||
       req.emailForLogging ||
       req.user?.id ||
@@ -80,7 +80,7 @@ const globalErrorLogger = (err, req, res, next) => {
 };
 
 export {
-  captureEmailForAuthLogging,
+  captureUsernameForAuthLogging,
   successLogger,
   warnLogger,
   errorLogger,

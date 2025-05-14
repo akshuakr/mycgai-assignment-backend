@@ -5,7 +5,7 @@ import {
   successLogger,
   errorLogger,
   globalErrorLogger,
-  captureEmailForAuthLogging,
+  captureUsernameForAuthLogging,
   warnLogger,
 } from "../middlewares/loggerMiddleware.js";
 
@@ -22,7 +22,7 @@ app.use(
 
 app.use(express.json()); // Middleware for JSON parsing
 app.set("trust proxy", true);
-app.use(captureEmailForAuthLogging);
+app.use(captureUsernameForAuthLogging);
 app.use(successLogger);
 app.use(warnLogger);
 app.use(errorLogger);
