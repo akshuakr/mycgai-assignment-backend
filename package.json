@@ -2,11 +2,21 @@
   "name": "mycgai-assignment-backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "logdna-winston": "^4.0.1",
+    "mongoose": "^8.14.3",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0"
+  }
 }
