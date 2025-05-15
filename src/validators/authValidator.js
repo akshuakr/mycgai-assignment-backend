@@ -6,4 +6,9 @@ const validateSignup = [
   body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
 ];
 
-export { validateSignup };
+const validateLogin = [
+  body("username").notEmpty().withMessage("Username required"),
+  body("password").notEmpty().withMessage("Password is required"),
+];
+
+export { validateSignup, validateLogin };
