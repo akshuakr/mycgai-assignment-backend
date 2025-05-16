@@ -21,7 +21,7 @@ const uploadFile = async (req, res, next) => {
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-    const result = await uploadFileHandler(userId, file, "pdf"); // Specify file type as "pdf"
+    const result = await uploadFileHandler(userId, file, "pdf");
     return res.status(result.status).json({ message: result.message, data: result.data });
   } catch (err) {
     return next({

@@ -46,7 +46,6 @@ const getUserById = async (userId) => {
 
 const uploadFile = async (userId, file, expectedFileType) => {
   try {
-    // Validate file type
     let validMimeTypes;
     if (expectedFileType === "pdf") {
       validMimeTypes = ["application/pdf"];
@@ -73,7 +72,6 @@ const uploadFile = async (userId, file, expectedFileType) => {
     const fileName = `${userId}/${uuidv4()}-${Date.now()}.${extension}`;
     const uploadResult = await uploadToS3(file, fileName);
 
-    // Save file details in the database
     const user = await userModel.findById(userId);
     user.files.push({
       fileName: uploadResult.fileName,
