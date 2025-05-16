@@ -1,4 +1,8 @@
-import { getUserById, uploadFile as uploadFileHandler } from "../handlers/userHandler.js";
+import {
+  getUserById,
+  uploadFile as uploadFileHandler,
+  listUserFiles,
+} from "../handlers/userHandler.js";
 
 const getUserDetails = async (req, res, next) => {
   try {
@@ -32,4 +36,18 @@ const uploadFile = async (req, res, next) => {
   }
 };
 
-export default { getUserDetails, uploadFile };
+const listFiles = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const result = await listUserFiles(userId);
+    return res.status(result.status).json({ message: result.message, data: result.data });
+  } catch (err) {
+    return next({
+      err,
+      userId: req.user.id,
+      funcName: "userController:listFiles",
+    });
+  }
+};
+
+export default { getUserDetails, uploadFile, listFiles };

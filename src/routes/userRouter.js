@@ -13,4 +13,7 @@ router.post(
   uploadMiddleware.single("file"),
   userController.uploadFile
 );
+
+router.get("/list-files", authMiddleware.verifyToken, userController.listFiles);
+
 export default router;

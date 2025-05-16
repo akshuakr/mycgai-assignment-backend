@@ -105,4 +105,47 @@ const uploadFile = async (userId, file, expectedFileType) => {
   }
 };
 
-export { getUserById, uploadFile };
+const listUserFiles = async (userId) => {
+  try {
+    const user = await userModel.findById(userId).select("files");
+    if (!user) {
+      logger.warn({
+        source: "userHandler:listUserFiles",
+        message: `${userId} - User not found`,
+      });
+      return {
+        status: HTTP_STATUS.NOT_FOUND,
+        message: "User not found",
+        data: [],
+      };
+    }
+
+    const files = user.files.map((file) => ({
+      fileName: file.fileName,
+      fileUrl: file.fileUrl,
+      originalName: file.originalName,
+      fileType: file.fileType,
+      lastModified: file.uploadedAt,
+    }));
+
+    logger.info({
+      source: "userHandler:listUserFiles",
+      message: `${userId} - Retrieved ${files.length} files from database`,
+    });
+
+    return {
+      status: HTTP_STATUS.OK,
+      message: "Files retrieved successfully",
+      data: files,
+    };
+  } catch (err) {
+    logger.error({
+      source: "userHandler:listUserFiles",
+      message: `${userId} - Error retrieving files from database`,
+      meta: { error: err.message },
+    });
+    throw err;
+  }
+};
+
+export { getUserById, uploadFile, listUserFiles };
