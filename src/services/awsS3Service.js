@@ -14,12 +14,44 @@ const s3Client = new S3Client({
 
 const uploadToS3 = async (file, fileName) => {
   try {
+
+    logger.debug({
+      source: "awss3Service:uploadToS3",
+      message: "Upload input",
+      fileType: typeof file,
+      fileIsObject: file && typeof file === "object",
+      hasBuffer: file && "buffer" in file,
+      fileName,
+    });
+
+
+    const isMulterFile = file && typeof file === "object" && "buffer" in file;
+    const body = isMulterFile ? file.buffer : file;
+
+
+    if (!Buffer.isBuffer(body)) {
+      logger.error({
+        source: "awss3Service:uploadToS3",
+        message: "Invalid file buffer",
+        fileType: typeof body,
+        fileValue: body,
+        fileName,
+      });
+      throw new Error("Invalid file buffer");
+    }
+
+
+    const contentType =
+      isMulterFile && file.mimetype
+        ? file.mimetype
+        : mime.lookup(fileName) || "application/octet-stream";
+
     const params = {
       Bucket: config.awsBucketName,
       Key: fileName,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-      //   ACL: "public-read",
+      Body: body,
+      ContentType: contentType,
+      ContentLength: body.length,
     };
 
     const command = new PutObjectCommand(params);
@@ -40,7 +72,7 @@ const uploadToS3 = async (file, fileName) => {
     logger.error({
       source: "awss3Service:uploadToS3",
       message: `Error uploading file to S3`,
-      meta: { error: err.message },
+      meta: { error: err.message, stack: err.stack },
     });
     throw err;
   }

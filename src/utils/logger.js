@@ -11,7 +11,8 @@ const logdnaOptions = {
 };
 
 const logger = winston.createLogger({
-  level: "info",
+  // level: "info",
+  level: "debug",
   transports: [
     new LogdnaWinston(logdnaOptions),
     new winston.transports.Console(),
