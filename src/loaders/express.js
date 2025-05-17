@@ -11,13 +11,22 @@ import {
 
 const app = express();
 
+// app.use(
+//   cors({
+//     origin: "*", // Allow all origins
+//     // origin: ["http://localhost:5173", "http://localhost:3000"], 
+//     //   credentials: true, // Allow sending cookies (if needed)
+//     //   allowedHeaders: ["Authorization", "Content-Type"], // Add any custom headers
+//   }),
+// );
+
 app.use(
   cors({
-    origin: "*", // Allow all origins
-    // origin: ["http://localhost:5173", "http://localhost:3000"], 
-    //   credentials: true, // Allow sending cookies (if needed)
-    //   allowedHeaders: ["Authorization", "Content-Type"], // Add any custom headers
-  }),
+    origin: ["http://localhost:5173", "https://mycgai.akshuakr.com", "http://mycgai.akshuakr.com"], // Change this to your frontend URL
+    credentials: true, // Allow sending cookies (if needed)
+    allowedHeaders: ["Authorization", "Content-Type"], // Add any custom headers
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  })
 );
 
 app.use(express.json()); // Middleware for JSON parsing
